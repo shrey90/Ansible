@@ -1,0 +1,21 @@
+---
+- name: install httpd
+  hosts: 192.168.207.133
+  tasks:
+   - name: install the nginx daemon
+     apt:
+      name:
+        - nginx
+        - firewalld
+      state: present
+ 
+   - name: start the sevice
+     service:
+       name: nginx
+       enabled: true
+       state: started
+ 
+   - name: copy the file from source to destination
+     copy:
+      src: /root/shrey.txt
+      dest: /home/shrey
