@@ -1,3 +1,14 @@
+Controller node
+
+Where ansible is installed only installed on controller machine
+
+cd /etc/ansible
+
+ansible.cfg 
+Inventory  (Details about managed hosts— (Server1,Server2,Server3 ) list of  all the hosts which you want to manage
+Ansible.cfg
+
+
 Playbook is written in YAML language and it should be in below format
 
 Name
