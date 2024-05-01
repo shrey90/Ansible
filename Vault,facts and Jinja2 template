@@ -1,0 +1,87 @@
+Ansible-vault create shrey
+Password : shrey
+
+Ansible-vault view vault name
+Enter password
+
+Ansible-vault edit vault name
+
+
+Cat vault-pass —define password
+
+
+Ansible-vault view vault name —vault-password -file=vault-pass
+
+Encrypt normal file
+
+Ansible-vault encrypt filename
+
+Decrypt
+
+Ansible-vault decrypt filename
+
+
+Ansible-vault decrypt filename —output=shrey-d —decrypted file content will be viewed in shrey-d
+
+Ansible-vault rekey filename.  —change the file password
+
+
+
+1019  ansible-vault edit hari 
+ 1020  cat vault-pass 
+ 1021  ansible-vault view hari --vault-password-file=vault-pass
+ 1022  vim shrey
+ 1023  cat shrey 
+ 1024  ansible-vault encrypt shrey 
+ 1025  cat shrey 
+ 1026  ansible-vault view shrey 
+ 1027  ansible-vault rekey shrey 
+ 1028  ansible-vault decrypt shrey --output=shrey-d
+ 1029  cat shrey-d 
+ 1030  cat shrey
+ 1031  ansible-vault decrypt shrey 
+ 1032  cat shrey
+ 1033  ansible-vault edit secret.yml 
+ 1034  cat secret.yml 
+ 1035  ls
+ 1036  vim users.yml 
+ 1037  ansible serverb -m command -a 'cat /etc/passwd'
+ 1038  ansible-navigator run users.yml -m stdout
+ 1039  ansible-navigator run users.yml -m stdout --vault-password-file=vault-pass
+ 1040  ansible serverb -m command -a 'cat /etc/passwd'
+ 1041  ssh anand@serverb
+
+
+
+name: anand
+- pwhash: redhat
+
+Create a normal file in which you have stored the password and that will be called while running below command
+
+ansible-playbook secrets.yaml --vault-password-file=vault-pass filename
+
+
+---
+- name: Display specific ansible_facts
+  hosts: webserver
+  tasks:
+    - name: Display specific facts
+      debug:
+        msg: >
+          Host "{{ ansible_facts['fqdn'] }}" with Python
+ version "{{ ansible_facts['python_version'] }}" has
+ "{{ ansible_facts['processor_count'] }}" processors and
+ "{{ ansible_facts['memtotal_mb'] }}" MiB of total system memory.
+
+
+
+
+jinja 
+
+
+
+
+{% for host in groups['all'] %}
+{{ hostvars[host]['ansible_facts']['default_ipv4']['address'] }} {{ hostvars[host]
+['ansible_facts']['fqdn'] }} {{ hostvars[host]['ansible_facts']['hostname'] }}
+{% endfor %}
