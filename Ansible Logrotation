@@ -1,0 +1,43 @@
+Create an jinja templete file in which you will run the commands
+
+# Prometheus log rotation configuration
+/path/to/prometheus/logs/*.log {
+    rotate 4
+    weekly
+    missingok
+    compress
+    delaycompress
+    notifempty
+    dateext
+    dateformat -%Y-%m-%d
+    create 0644 prometheus prometheus
+}
+
+
+Now create an YAML playbook and call it
+
+---
+- name: Rotate Prometheus and system logs
+  hosts: your_hosts
+  become: yes
+  tasks:
+    # Install logrotate package
+    - name: Install logrotate package
+      package:
+        name: logrotate
+        state: present
+
+    # Configure log rotation for Prometheus logs
+    - name: Create logrotate configuration for Prometheus
+      template:
+        src: prometheus_logrotate.conf.j2
+        dest: /etc/logrotate.d/prometheus
+      notify: reload logrotate
+
+
+  handlers:
+    # Reload logrotate after configuration changes
+    - name: reload logrotate
+      service:
+        name: logrotate
+        state: reloaded
