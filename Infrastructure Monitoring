@@ -1,0 +1,25 @@
+---
+- name: Gather facts and monitor servers
+  hosts: all
+  tasks:
+    - name: Gather system facts
+      ansible.builtin.setup:
+
+    # Example: Check CPU utilization
+    - name: Display CPU utilization
+      debug:
+        msg: "Server {{ ansible_hostname }} CPU utilization: {{ ansible_processor_cores }} cores, {{ ansible_processor_usage | float * 100 | round(2) }}%"
+
+    # Example: Check memory usage
+    - name: Display memory usage
+      debug:
+        msg: "Server {{ ansible_hostname }} memory usage: {{ ansible_memtotal_mb | int }} MB total, {{ ansible_memfree_mb | int }} MB free"
+
+    # Example: Check disk usage
+    - name: Display disk usage
+      debug:
+        msg: |
+          Server {{ ansible_hostname }} disk usage:
+          {% for mount in ansible_mounts %}
+          {{ mount.mount }} - Total: {{ mount.size_total | int / 1024 / 1024 }} MB, Free: {{ mount.size_available | int / 1024 / 1024 }} MB
+          {% endfor %}
